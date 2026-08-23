@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>似ているユーザ探索の19年：集合知プログラミング (2007) vs BigQuery VECTOR_SEARCH (2026)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-base: #0a0e17;
+      --bg-surface: #111827;
+      --bg-surface-elevated: #1a2234;
+      --bg-glass: rgba(17, 24, 39, 0.75);
+      --border-color: #23304a;
+      --border-focus: #3b82f6;
+
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+
+      --accent-classic: #f59e0b; /* Amber for 2007 */
+      --accent-classic-bg: rgba(245, 158, 11, 0.12);
+      --accent-classic-border: rgba(245, 158, 11, 0.3);
+
+      --accent-modern: #38bdf8; /* Cyan/Sky for 2026 */
+      --accent-modern-gradient: linear-gradient(135deg, #38bdf8, #818cf8);
+      --accent-modern-bg: rgba(56, 189, 248, 0.12);
+      --accent-modern-border: rgba(56, 189, 248, 0.3);
+
+      --success-green: #10b981;
+      --success-green-bg: rgba(16, 185, 129, 0.15);
+      --danger-red: #ef4444;
+
+      --font-main: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-display: 'Outfit', sans-serif;
+      --font-mono: 'Fira Code', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-base);
+      color: var(--text-primary);
+      font-family: var(--font-main);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background-image: 
+        radial-gradient(circle at 15% 15%, rgba(245, 158, 11, 0.05) 0%, transparent 40%),
+        radial-gradient(circle at 85% 15%, rgba(56, 189, 248, 0.07) 0%, transparent 40%);
+    }
+
+    header {
+      padding: 2.5rem 2rem 1.5rem;
+      text-align: center;
+      border-bottom: 1px solid var(--border-color);
+      background: var(--bg-glass);
+      backdrop-filter: blur(12px);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .header-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-color);
+      padding: 0.35rem 1rem;
+      border-radius: 9999px;
+      font-size: 0.82rem;
+      font-family: var(--font-mono);
+      color: var(--accent-modern);
+      margin-bottom: 0.75rem;
+    }
+
+    h1 {
+      font-family: var(--font-display);
+      font-size: 2.1rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.5rem;
+      background: linear-gradient(135deg, #ffffff 30%, #94a3b8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .subtitle {
+      color: var(--text-secondary);
+      font-size: 1rem;
+      max-width: 860px;
+      margin: 0 auto;
+    }
+
+    main {
+      flex: 1;
+      max-width: 1400px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    /* Control Panel */
+    .control-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 1.5rem;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr auto;
+      gap: 1.25rem;
+      align-items: end;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .form-group label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    select, button {
+      height: 44px;
+      padding: 0 1rem;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-family: var(--font-main);
+      background: var(--bg-surface-elevated);
+      color: var(--text-primary);
+      border: 1px solid var(--border-color);
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+
+    select:focus, button:focus {
+      outline: none;
+      border-color: var(--border-focus);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+    }
+
+    .btn-primary {
+      background: var(--accent-modern-gradient);
+      color: #051329;
+      font-weight: 700;
+      border: none;
+      padding: 0 1.75rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .btn-primary:hover {
+      opacity: 0.92;
+      transform: translateY(-1px);
+    }
+
+    /* Target User Card */
+    .target-profile-card {
+      background: linear-gradient(135deg, rgba(30, 41, 59, 0.6), rgba(15, 23, 42, 0.8));
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 1.5rem;
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 1.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .target-profile-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      width: 4px;
+      background: linear-gradient(to bottom, var(--accent-classic), var(--accent-modern));
+    }
+
+    .user-tag {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: var(--accent-modern);
+      background: var(--bg-base);
+      padding: 0.25rem 0.6rem;
+      border-radius: 4px;
+      display: inline-block;
+      margin-bottom: 0.5rem;
+    }
+
+    .segment-badge {
+      display: inline-block;
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--text-primary);
+      margin-bottom: 0.25rem;
+    }
+
+    .interests-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-top: 0.6rem;
+    }
+
+    .interest-pill {
+      font-size: 0.78rem;
+      background: var(--bg-surface-elevated);
+      color: var(--text-secondary);
+      padding: 0.2rem 0.6rem;
+      border-radius: 9999px;
+      border: 1px solid var(--border-color);
+    }
+
+    /* Comparison Grid */
+    .comparison-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+
+    @media (max-width: 1024px) {
+      .comparison-grid {
+        grid-template-columns: 1fr;
+      }
+      .control-card {
+        grid-template-columns: 1fr;
+      }
+      .target-profile-card {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .era-column {
+      background: var(--bg-surface);
+      border-radius: 16px;
+      border: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+    }
+
+    .era-column.classic {
+      border-top: 4px solid var(--accent-classic);
+    }
+
+    .era-column.modern {
+      border-top: 4px solid var(--accent-modern);
+    }
+
+    .era-header {
+      padding: 1.25rem 1.5rem;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .era-title {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .era-title.classic { color: var(--accent-classic); }
+    .era-title.modern { color: var(--accent-modern); }
+
+    .era-metric-chip {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      padding: 0.3rem 0.75rem;
+      border-radius: 6px;
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-color);
+      color: var(--text-secondary);
+    }
+
+    .precision-box {
+      margin: 1rem 1.5rem 0.5rem;
+      padding: 1rem;
+      border-radius: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .precision-box.classic {
+      background: var(--accent-classic-bg);
+      border: 1px solid var(--accent-classic-border);
+    }
+
+    .precision-box.modern {
+      background: var(--accent-modern-bg);
+      border: 1px solid var(--accent-modern-border);
+    }
+
+    .precision-value {
+      font-size: 1.4rem;
+      font-weight: 800;
+      font-family: var(--font-display);
+    }
+
+    .matches-container {
+      padding: 1rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      flex: 1;
+    }
+
+    .match-card {
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1rem 1.25rem;
+      transition: all 0.2s ease;
+      position: relative;
+    }
+
+    .match-card:hover {
+      border-color: #3b82f6;
+      transform: translateY(-2px);
+    }
+
+    .match-card.same-segment {
+      border-left: 4px solid var(--success-green);
+    }
+
+    .match-card.diff-segment {
+      border-left: 4px solid var(--text-muted);
+      opacity: 0.75;
+    }
+
+    .match-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.4rem;
+    }
+
+    .match-id {
+      font-family: var(--font-mono);
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .match-score {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      font-weight: 700;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+    }
+
+    .score-classic {
+      background: var(--accent-classic-bg);
+      color: var(--accent-classic);
+    }
+
+    .score-modern {
+      background: var(--accent-modern-bg);
+      color: var(--accent-modern);
+    }
+
+    .match-seg-badge {
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      display: inline-block;
+      margin-bottom: 0.4rem;
+    }
+
+    .badge-match {
+      background: var(--success-green-bg);
+      color: var(--success-green);
+    }
+
+    .badge-mismatch {
+      background: rgba(148, 163, 184, 0.15);
+      color: var(--text-secondary);
+    }
+
+    .match-body {
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    .shared-items-section {
+      margin-top: 0.6rem;
+      padding-top: 0.6rem;
+      border-top: 1px dashed var(--border-color);
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    /* Insights Footer Section */
+    .insights-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 1.75rem;
+    }
+
+    .insights-title {
+      font-family: var(--font-display);
+      font-size: 1.3rem;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .insight-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+    }
+
+    @media (max-width: 900px) {
+      .insight-grid { grid-template-columns: 1fr; }
+    }
+
+    .insight-box {
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1.25rem;
+    }
+
+    .insight-box h4 {
+      font-size: 0.95rem;
+      margin-bottom: 0.5rem;
+      color: var(--accent-modern);
+    }
+
+    .insight-box p {
+      font-size: 0.86rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    .spinner {
+      border: 3px solid rgba(255,255,255,0.1);
+      border-top: 3px solid var(--accent-modern);
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      animation: spin 1s linear infinite;
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-badge">Google Cloud BigQuery × Collective Intelligence (PCI)</div>
+    <h1>似ているユーザ探索の19年：手法比較</h1>
+    <p class="subtitle">
+      2007年『集合知プログラミング』の手書き協調フィルタリング（スパース評価値）と、2026年 BigQuery VECTOR_SEARCH（Dense Embedding）の推薦結果・精度・原理を同一ユーザで左右比較。
+    </p>
+  </header>
+
+  <main>
+    <!-- Controls -->
+    <div class="control-card">
+      <div class="form-group">
+        <label for="userSelect">比較対象ユーザ (Target User)</label>
+        <select id="userSelect">
+          {% for u in sample_users %}
+            <option value="{{ u.user_id }}">
+              {{ u.user_id }} - [{{ u.segment_name }}] {{ u.profile_snippet }}
+            </option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="classicMethod">2007年 類似度手法</label>
+        <select id="classicMethod">
+          <option value="pearson">ピアソン相関 (中心化Cos/共通項)</option>
+          <option value="cosine_shared">コサイン類似度 (共通アイテムのみ)</option>
+          <option value="cosine_zero">コサイン類似度 (ゼロ埋めスパース)</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="searchMode">2026年 探索モード</label>
+        <select id="searchMode">
+          <option value="approximate">IVF/TreeAH Index (Approximate)</option>
+          <option value="brute_force">ブルートフォース (Exact Search)</option>
+        </select>
+      </div>
+
+      <button id="runBtn" class="btn-primary" onclick="runComparison()">
+        <span>比較実行</span> ⚡
+      </button>
+    </div>
+
+    <!-- Target User Information -->
+    <div id="targetCard" class="target-profile-card">
+      <div>
+        <span class="user-tag" id="targetId">usr_000001</span>
+        <div class="segment-badge" id="targetSegment">セグメント名</div>
+        <div style="font-size: 0.85rem; color: var(--text-muted);" id="targetDemographics">30s / 女性 / 東京都</div>
+        <div class="interests-list" id="targetInterests"></div>
+      </div>
+      <div>
+        <div style="font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.3rem; font-weight: 600;">プロフィール文章 (Embedding 入力)</div>
+        <div style="font-size: 0.95rem; color: var(--text-primary); background: rgba(0,0,0,0.25); padding: 0.75rem 1rem; border-radius: 8px; border: 1px solid var(--border-color);" id="targetProfile"></div>
+        <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.5rem;" id="targetRatingsSummary">評価アイテム数: 10件</div>
+      </div>
+    </div>
+
+    <!-- Comparison Grid (Side by Side) -->
+    <div class="comparison-grid">
+      <!-- 2007 Classic PCI -->
+      <div class="era-column classic">
+        <div class="era-header">
+          <div class="era-title classic">
+            <span>📜 2007年: 集合知プログラミング</span>
+          </div>
+          <div class="era-metric-chip" id="classicLatency">0.0 ms</div>
+        </div>
+
+        <div class="precision-box classic">
+          <div>
+            <div style="font-size: 0.8rem; color: var(--text-secondary);">潜在セグメント正解率 (Precision@5)</div>
+            <div style="font-size: 0.75rem; color: var(--text-muted);">正解セグメントを引き当てられた割合</div>
+          </div>
+          <div class="precision-value" id="classicPrecision" style="color: var(--accent-classic);">-- %</div>
+        </div>
+
+        <div class="matches-container" id="classicMatches">
+          <div style="text-align:center; padding: 2rem; color: var(--text-muted);">読み込み中...</div>
+        </div>
+      </div>
+
+      <!-- 2026 BigQuery VECTOR_SEARCH -->
+      <div class="era-column modern">
+        <div class="era-header">
+          <div class="era-title modern">
+            <span>⚡ 2026年: BigQuery VECTOR_SEARCH</span>
+          </div>
+          <div class="era-metric-chip" id="modernLatency">0.0 ms</div>
+        </div>
+
+        <div class="precision-box modern">
+          <div>
+            <div style="font-size: 0.8rem; color: var(--text-secondary);">潜在セグメント正解率 (Precision@5)</div>
+            <div style="font-size: 0.75rem; color: var(--text-muted);">正解セグメントを引き当てられた割合</div>
+          </div>
+          <div class="precision-value" id="modernPrecision" style="color: var(--accent-modern);">-- %</div>
+        </div>
+
+        <div class="matches-container" id="modernMatches">
+          <div style="text-align:center; padding: 2rem; color: var(--text-muted);">読み込み中...</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Analytical Insights -->
+    <div class="insights-card">
+      <div class="insights-title">
+        <span>💡 時代を超えた技術対比インサイト</span>
+      </div>
+      <div class="insight-grid">
+        <div class="insight-box">
+          <h4>1. 共通項限定 vs 稠密(Dense)埋め込み</h4>
+          <p>
+            2007年の手法（ピアソン/共通項cos）は、評価アイテムが1つでも完全に一致すると類似度1.0になり誤爆しやすい（スパースの罠）。2026年のEmbeddingはプロフィール全文の意味空間を捉えるため、語彙が違っても高精度に同セグメントを捉えます。
+          </p>
+        </div>
+        <div class="insight-box">
+          <h4>2. スケールとインデックス（O(N²) vs ANN）</h4>
+          <p>
+            2007年のメモリ総当たりは1万件で数十〜数百msに達し、数万件で破綻します。BigQueryのTreeAH / IVFインデックスは1000万件規模でも数ミリ秒〜数十ミリ秒で近傍を探索可能です。
+          </p>
+        </div>
+        <div class="insight-box">
+          <h4>3. BigQuery インデックスの最小行数</h4>
+          <p>
+            BigQuery の <code>CREATE VECTOR INDEX</code> は 5,000行以上のテーブルでのみ有効化されます。数千行以下の小規模データセットでは自動的にブルートフォース（厳密探索）が実行されます。
+          </p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    async function runComparison() {
+      const userId = document.getElementById('userSelect').value;
+      const classicMethod = document.getElementById('classicMethod').value;
+      const searchMode = document.getElementById('searchMode').value;
+      const useBruteForce = (searchMode === 'brute_force');
+
+      const btn = document.getElementById('runBtn');
+      btn.innerHTML = '<span class="spinner"></span> 探索中...';
+      btn.disabled = true;
+
+      try {
+        const res = await fetch('/api/compare', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            user_id: userId,
+            top_k: 5,
+            classic_method: classicMethod,
+            use_brute_force: useBruteForce
+          })
+        });
+
+        if (!res.ok) throw new Error('API request failed');
+        const data = await res.json();
+        renderResults(data);
+      } catch (err) {
+        alert('Error: ' + err.message);
+      } finally {
+        btn.innerHTML = '<span>比較実行</span> ⚡';
+        btn.disabled = false;
+      }
+    }
+
+    function renderResults(data) {
+      // 1. Target User
+      const t = data.target_user;
+      document.getElementById('targetId').textContent = t.user_id;
+      document.getElementById('targetSegment').textContent = t.segment_name;
+      document.getElementById('targetProfile').textContent = t.profile_text;
+      document.getElementById('targetRatingsSummary').textContent = `評価アイテム数: ${t.ratings_count} 件 (スパース表現)`;
+
+      const intContainer = document.getElementById('targetInterests');
+      intContainer.innerHTML = '';
+      (t.interests || []).forEach(item => {
+        const span = document.createElement('span');
+        span.className = 'interest-pill';
+        span.textContent = item;
+        intContainer.appendChild(span);
+      });
+
+      // 2. Classic PCI
+      const c = data.classic;
+      document.getElementById('classicLatency').textContent = `${c.elapsed_ms} ms (Python Memory)`;
+      document.getElementById('classicPrecision').textContent = `${c.precision} %`;
+
+      const cContainer = document.getElementById('classicMatches');
+      cContainer.innerHTML = '';
+      c.matches.forEach((m, idx) => {
+        const card = document.createElement('div');
+        card.className = `match-card ${m.is_same_segment ? 'same-segment' : 'diff-segment'}`;
+        card.innerHTML = `
+          <div class="match-header">
+            <span class="match-id">#${idx+1} ${m.user_id}</span>
+            <span class="match-score score-classic">類似度: ${m.score}</span>
+          </div>
+          <div>
+            <span class="match-seg-badge ${m.is_same_segment ? 'badge-match' : 'badge-mismatch'}">
+              ${m.is_same_segment ? '✓ セグメント一致' : '✕ セグメント不一致'}: ${m.segment_name}
+            </span>
+          </div>
+          <div class="match-body">${m.profile_text}</div>
+          <div class="shared-items-section">
+            共通評価アイテム数: ${m.shared_items_count} 件
+          </div>
+        `;
+        cContainer.appendChild(card);
+      });
+
+      // 3. Modern BigQuery VECTOR_SEARCH
+      const m = data.modern;
+      document.getElementById('modernLatency').textContent = `${m.elapsed_ms} ms (BigQuery)`;
+      document.getElementById('modernPrecision').textContent = `${m.precision} %`;
+
+      const mContainer = document.getElementById('modernMatches');
+      mContainer.innerHTML = '';
+      m.matches.forEach((item, idx) => {
+        const card = document.createElement('div');
+        card.className = `match-card ${item.is_same_segment ? 'same-segment' : 'diff-segment'}`;
+        card.innerHTML = `
+          <div class="match-header">
+            <span class="match-id">#${idx+1} ${item.user_id}</span>
+            <span class="match-score score-modern">Cos類似度: ${item.similarity}</span>
+          </div>
+          <div>
+            <span class="match-seg-badge ${item.is_same_segment ? 'badge-match' : 'badge-mismatch'}">
+              ${item.is_same_segment ? '✓ セグメント一致' : '✕ セグメント不一致'}: ${item.segment_name}
+            </span>
+          </div>
+          <div class="match-body">${item.profile_text}</div>
+        `;
+        mContainer.appendChild(card);
+      });
+    }
+
+    // Auto-run on page load
+    window.addEventListener('DOMContentLoaded', () => {
+      runComparison();
+    });
+  </script>
+</body>
+</html>

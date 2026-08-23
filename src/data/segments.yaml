@@ -1,0 +1,351 @@
+segments:
+  - segment_id: "tech_early_adopter"
+    name: "先端テック・アーリーアダプター"
+    description: "最新ガジェット、AIツール、プログラミング、スタートアップ動向に強い関心を持つ都市部在住の技術志向層。"
+    demographics:
+      age_bands: ["20s", "30s", "40s"]
+      genders: ["male", "female", "other"]
+      areas: ["東京都", "神奈川県", "大阪府", "福岡県"]
+    interests: ["生成AI", "スマートホーム", "ガジェット", "クラウドアーキテクチャ", "自作キーボード", "オープンソース"]
+    preferred_items:
+      - item_id: "item_tech_001" # 最新ノイズキャンセリングヘッドホン
+        base_rating: 4.8
+      - item_id: "item_tech_002" # 4Kウルトラワイドモニター
+        base_rating: 4.7
+      - item_id: "item_tech_003" # クラウドエンジニアリング実践書
+        base_rating: 4.9
+      - item_id: "item_tech_004" # スマートLED電球・ハブセット
+        base_rating: 4.5
+      - item_id: "item_tech_005" # メカニカルキーボード
+        base_rating: 4.6
+    disliked_items:
+      - item_id: "item_paper_001" # 紙の手帳・万年筆セット
+        base_rating: 2.0
+      - item_id: "item_fashion_005" # レトロヴィンテージ古着
+        base_rating: 2.3
+    profile_templates:
+      - "普段は{job}として働いており、休日は{hobby}や最新の{tech_focus}の検証に没頭しています。特に{fav_device}の使い心地にはこだわっています。"
+      - "週末は{hobby}を楽しみつつ、{tech_focus}関連のコミュニティ活動に参加しています。生産性を高める{fav_device}などのツールには投資を惜しみません。"
+      - "{job}に従事。日々のルーティンは{tech_focus}の情報収集と{hobby}です。スマート家電で自宅を自動化するのが好きです。"
+    slots:
+      job: ["ソフトウェアエンジニア", "データアナリスト", "プロダクトマネージャー", "SREエンジニア", "スタートアップCTO"]
+      hobby: ["個人開発", "技術ブログ執筆", "ハッカソン参加", "ガジェット収集", "PC自作"]
+      tech_focus: ["LLMアプリケーション", "エッジAI", "IaC", "分散システム", "Vector Database"]
+      fav_device: ["ウルトラワイドモニター", "左右分離型キーボード", "VRヘッドセット", "高性能ポータブルDAC"]
+
+  - segment_id: "frugal_family_organizer"
+    name: "子育て節約・家計管理層"
+    description: "家計の節約、作り置き時短料理、ポイ活、育児グッズのコスパを重視するファミリー層。"
+    demographics:
+      age_bands: ["30s", "40s"]
+      genders: ["female", "male"]
+      areas: ["埼玉県", "千葉県", "愛知県", "兵庫県", "北海道"]
+    interests: ["節約術", "ポイ活", "作り置きレシピ", "知育玩具", "業務スーパー", "ふるさと納税"]
+    preferred_items:
+      - item_id: "item_frugal_001" # 大容量電気圧力鍋
+        base_rating: 4.8
+      - item_id: "item_frugal_002" # 節約家計簿アプリプレミアム
+        base_rating: 4.6
+      - item_id: "item_frugal_003" # コスパ最強まとめ買い冷凍保存容器
+        base_rating: 4.9
+      - item_id: "item_frugal_004" # モンテッソーリ知育パズル
+        base_rating: 4.5
+      - item_id: "item_frugal_005" # 自動ポイント還元クレジットカード
+        base_rating: 4.7
+    disliked_items:
+      - item_id: "item_luxury_001" # 高級ブランドバッグ
+        base_rating: 1.8
+      - item_id: "item_gourmet_003" # 高級ワイン頒布会
+        base_rating: 2.1
+    profile_templates:
+      - "{child_info}を育てながら、日々の{daily_goal}に励んでいます。お得な{fav_activity}や{shop_type}の特売巡りが日課です。"
+      - "家族のために{daily_goal}を実践中。休日は子どもと{family_outing}を楽しみつつ、{fav_activity}で生活コストを工夫しています。"
+      - "共働きで{child_info}の育児中。時短のための{frugal_tool}活用や{fav_activity}の情報交換をよくしています。"
+    slots:
+      child_info: ["未就学児2人", "小学生の息子", "3歳の娘", "幼児と小学生の兄妹"]
+      daily_goal: ["無駄のない家計管理", "週末の1週間分作り置き", "無理のない節約生活", "教育資金の計画的積立"]
+      fav_activity: ["ポイ活ルーティン", "ふるさと納税の比較", "ドラッグストアのポイント還元デー攻略", "家計簿アプリでの収支チェック"]
+      shop_type: ["業務スーパー", "コストコ", "地元ディスカウントスーパー", "生協の宅配"]
+      family_outing: ["近所の大型公園ピクニック", "地域の無料体験イベント", "図書館巡り"]
+      frugal_tool: ["電気圧力鍋", "真空パック機", "大容量冷凍庫"]
+
+  - segment_id: "urban_single_gourmet"
+    name: "都心単身・美食・カルチャー派"
+    description: "都心部で一人暮らしを満喫し、カフェ巡り、クラフトビール、観劇、インテリアにこだわる層。"
+    demographics:
+      age_bands: ["20s", "30s", "40s"]
+      genders: ["male", "female", "other"]
+      areas: ["東京都", "神奈川県", "京都府", "大阪府"]
+    interests: ["スペシャルティコーヒー", "クラフトビール", "自然派ワイン", "北欧インテリア", "単館映画", "美術館巡り"]
+    preferred_items:
+      - item_id: "item_gourmet_001" # 手挽き高級コーヒーミル
+        base_rating: 4.9
+      - item_id: "item_gourmet_002" # クラフトビール飲み比べ定期便
+        base_rating: 4.8
+      - item_id: "item_gourmet_003" # 高級ワイン頒布会
+        base_rating: 4.6
+      - item_id: "item_interior_001" # 北欧デザインペンダントライト
+        base_rating: 4.7
+      - item_id: "item_culture_001" # アートブック・写真集
+        base_rating: 4.5
+    disliked_items:
+      - item_id: "item_frugal_003" # コスパ最強まとめ買い冷凍保存容器
+        base_rating: 2.5
+      - item_id: "item_outdoor_004" # 本格大型サバイバルテント
+        base_rating: 1.9
+    profile_templates:
+      - "都内で{lifestyle}を楽しみながら暮らしています。休日は{favorite_place}に出かけ、夜はこだわりの{drink_type}を味わうのが至福のひとときです。"
+      - "{profession}として働き、週末は{favorite_place}でのんびり過ごします。部屋には{interior_item}を取り入れ、心地よい空間づくりをしています。"
+      - "美味しい{drink_type}とカルチャー巡りが生きがい。最近は{hobby_urban}にハマっていて、感性を刺激されるスポットを探索中。"
+    slots:
+      lifestyle: ["洗練された一人暮らし", "ミニマルな都心ライフ", "カルチャー重視の生活"]
+      favorite_place: ["奥渋谷の隠れ家カフェ", "清澄白河のロースタリー", "恵比寿のミニシアター", "六本木の現代美術館"]
+      drink_type: ["浅煎りシングルオリジンコーヒー", "国産クラフトIPA", "ナチュールワイン", "自家製スパイスチャイ"]
+      profession: ["Webデザイナー", "マーケター", "編集者", "アパレルバイヤー"]
+      interior_item: ["ヴィンテージ家具", "観葉植物とポスター", "無垢材のダイニングテーブル"]
+      hobby_urban: ["純喫茶巡り", "スパイスカレー探訪", "ギャラリー巡り", "レコード収集"]
+
+  - segment_id: "outdoor_camp_enthusiast"
+    name: "本格アウトドア・キャンプ愛好家"
+    description: "週末は自然の中に繰り出し、ソロキャンプや登山、焚き火、ギアのメンテナンスを楽しむアウトドア層。"
+    demographics:
+      age_bands: ["20s", "30s", "40s", "50s"]
+      genders: ["male", "female"]
+      areas: ["長野県", "静岡県", "山梨県", "神奈川県", "群馬県", "北海道"]
+    interests: ["ソロキャンプ", "焚き火", "ブッシュクラフト", "登山トレッキング", "ギアカスタム", "車中泊"]
+    preferred_items:
+      - item_id: "item_outdoor_001" # チタン製軽量クッカーセット
+        base_rating: 4.9
+      - item_id: "item_outdoor_002" # 折りたたみ焚き火台
+        base_rating: 4.8
+      - item_id: "item_outdoor_003" # ポータブル電源大容量
+        base_rating: 4.7
+      - item_id: "item_outdoor_004" # 本格大型サバイバルテント
+        base_rating: 4.6
+      - item_id: "item_outdoor_005" # オピネルフォールディングナイフ
+        base_rating: 4.8
+    disliked_items:
+      - item_id: "item_fashion_001" # ビジネス用本革ドレスシューズ
+        base_rating: 1.7
+      - item_id: "item_tech_005" # メカニカルキーボード
+        base_rating: 2.2
+    profile_templates:
+      - "週末は愛車に{gear_fav}を積み込んで{camp_style}へ。自然の中で{outdoor_act}をする時間が最高のデトックスです。"
+      - "{nature_spot}での{camp_style}がライフワーク。ギアの手入れや{outdoor_act}をしながらのんびり過ごすのが好きです。"
+      - "アウトドア歴{exp_years}年。最近は{camp_style}に夢中で、こだわりの{gear_fav}を使って野営飯を作っています。"
+    slots:
+      camp_style: ["ふもとっぱらでのソロキャンプ", "湖畔でのブッシュクラフト", "標高2000mの山岳テント泊", "林間サイトでの車中泊"]
+      gear_fav: ["チタンマグと焚き火台", "ヴィンテージランタン", "難燃素材のタープ", "鍛造ペグと手斧"]
+      outdoor_act: ["直火での焙煎コーヒー淹れ", "満天の星空撮影", "渓流釣り", "スキレットでの肉料理"]
+      nature_spot: ["八ヶ岳山麓", "富士五湖周辺", "奥多摩の渓流", "北アルプス"]
+      exp_years: ["3", "5", "8", "10"]
+
+  - segment_id: "wellness_senior_active"
+    name: "健康長寿・アクティブシニア層"
+    description: "ウォーキング、家庭菜園、温泉旅行、健康食品に親しみ、豊かで健やかなシニアライフを送る層。"
+    demographics:
+      age_bands: ["50s", "60s", "70s"]
+      genders: ["female", "male"]
+      areas: ["全国"]
+    interests: ["ウォーキング", "家庭菜園", "日帰り温泉", "健康診断・予防医学", "和食・発酵食品", "国内名所巡り"]
+    preferred_items:
+      - item_id: "item_senior_001" # 軽量ウォーキングシューズ
+        base_rating: 4.9
+      - item_id: "item_senior_002" # 国産黒にんにく発酵食品
+        base_rating: 4.7
+      - item_id: "item_senior_003" # 家庭菜園スターターキット
+        base_rating: 4.8
+      - item_id: "item_senior_004" # 温泉宿泊ギフト券
+        base_rating: 4.9
+      - item_id: "item_senior_005" # 血圧・睡眠トラッカー付きシンプルスマートバンド
+        base_rating: 4.5
+    disliked_items:
+      - item_id: "item_anime_001" # アニメ美少女フィギュア
+        base_rating: 1.2
+      - item_id: "item_tech_005" # メカニカルキーボード
+        base_rating: 1.8
+    profile_templates:
+      - "毎朝の{morning_routine}を欠かさず、健康第一で過ごしています。週末は夫婦で{senior_hobby}を楽しんでいます。"
+      - "定年後は{senior_hobby}に親しみ、庭で{garden_act}を育てています。たまに行く{travel_spot}の温泉が楽しみです。"
+      - "日々の健康管理のために{morning_routine}を実践中。食生活は{diet_focus}を心がけ、元気に毎日を送っています。"
+    slots:
+      morning_routine: ["ラジオ体操と8000歩ウォーキング", "太極拳とストレッチ", "朝風呂と青汁一杯"]
+      senior_hobby: ["名所旧跡巡り", "水彩画教室", "グラウンドゴルフ", "日帰り温泉めぐり"]
+      garden_act: ["無農薬の夏野菜", "色とりどりの四季の花", "盆栽とハーブ"]
+      travel_spot: ["箱根や伊豆", "草津の名湯", "信州の秘湯", "有馬温泉"]
+      diet_focus: ["減塩和食と自家製味噌", "発酵食品と旬の野菜", "高タンパク低脂質の食事"]
+
+  - segment_id: "subculture_anime_gamer"
+    name: "サブカル・アニメ・ゲーマー層"
+    description: "アニメ鑑賞、コンシューマー/PCゲーム、声優イベント、同人誌即売会などに情熱を注ぐ熱心なファン層。"
+    demographics:
+      age_bands: ["10s", "20s", "30s"]
+      genders: ["male", "female", "other"]
+      areas: ["東京都", "神奈川県", "埼玉県", "愛知県", "大阪府"]
+    interests: ["深夜アニメ", "RPG・FPSゲーム", "Steam", "Vtuber配信", "声優ライブ", "フィギュア収集"]
+    preferred_items:
+      - item_id: "item_anime_001" # 限定版美少女フィギュア
+        base_rating: 4.9
+      - item_id: "item_anime_002" # ゲーミングヘッドセット7.1ch
+        base_rating: 4.8
+      - item_id: "item_anime_003" # Steamギフトカード10000円
+        base_rating: 4.9
+      - item_id: "item_anime_004" # 公式設定資料集特装版
+        base_rating: 4.7
+      - item_id: "item_tech_002" # 4Kウルトラワイドモニター
+        base_rating: 4.5
+    disliked_items:
+      - item_id: "item_senior_002" # 国産黒にんにく発酵食品
+        base_rating: 1.5
+      - item_id: "item_outdoor_004" # 本格大型サバイバルテント
+        base_rating: 1.6
+    profile_templates:
+      - "休日は{gaming_style}と{anime_act}に全力を注いでいます。推しの{fandom_type}を応援するのが日々の原動力です。"
+      - "{game_genre}や新作アニメの消化で忙しい毎日。部屋の{room_setup}環境を強化して没入感を高めています。"
+      - "好きな作品はとことん追うタイプ。週末は{fandom_act}に参加したり、配信をリアタイして楽しんでいます。"
+    slots:
+      gaming_style: ["Steamでのインディーゲーム漁り", "仲間とのランクマッチ周回", "新作オープンワールドRPG攻略"]
+      anime_act: ["今期アニメの一気見", "聖地巡礼の旅", "原作ラノベの読破"]
+      fandom_type: ["Vtuberの生配信", "声優のラジオ番組", "大好きなアニメキャラのグッズ"]
+      game_genre: ["フロムソフトウェア系死にゲー", "対戦格闘ゲーム", "JRPG", "タクティカルシューター"]
+      room_setup: ["ゲーミングチェアとモニターアーム", "防音カーテンとLEDライティング"]
+      fandom_act: ["コミックマーケットやイベント", "推しのリアルライブ", "コラボカフェ巡り"]
+
+  - segment_id: "fitness_bodybuild_runner"
+    name: "フィットネス・筋トレ・ランナー層"
+    description: "日々のワークアウト、マラソン大会、マクロ栄養管理、プロテイン摂取を欠かさない自己研鑽アスリート層。"
+    demographics:
+      age_bands: ["20s", "30s", "40s"]
+      genders: ["male", "female"]
+      areas: ["全国"]
+    interests: ["ジム通い", "ウエイトトレーニング", "マラソン", "プロテイン・サプリ", "PFCバランス管理", "スマートウォッチ"]
+    preferred_items:
+      - item_id: "item_fitness_001" # WPIホエイプロテイン3kg
+        base_rating: 4.9
+      - item_id: "item_fitness_002" # 可変式ダンベルセット
+        base_rating: 4.8
+      - item_id: "item_fitness_003" # ランニング用厚底カーボンシューズ
+        base_rating: 4.8
+      - item_id: "item_fitness_004" # 筋膜リリースガン
+        base_rating: 4.7
+      - item_id: "item_fitness_005" # 体組成計スマホ連動
+        base_rating: 4.6
+    disliked_items:
+      - item_id: "item_gourmet_002" # クラフトビール飲み比べ定期便
+        base_rating: 1.5
+      - item_id: "item_anime_001" # 限定版美少女フィギュア
+        base_rating: 2.0
+    profile_templates:
+      - "週{workout_freq}回の{training_type}が日課。食事は{nutrition_goal}を徹底し、次の{event_goal}に向けて身体を作っています。"
+      - "{training_type}を通じて心身を鍛えています。愛用の{fit_gear}を使って毎日の数値を記録・分析するのが日課です。"
+      - "朝は{morning_run}からスタート。常に{nutrition_goal}を意識した自炊生活を送り、パフォーマンス向上を目指しています。"
+    slots:
+      workout_freq: ["4", "5", "6"]
+      training_type: ["エニタイムでのフリーウエイト筋トレ", "早朝の10kmペース走", "クロスフィットトレーニング"]
+      nutrition_goal: ["高タンパク・クリーンなPFC管理", "減量期のケトジェニック食", "糖質と脂質の徹底コントロール"]
+      event_goal: ["フルマラソンでのサブ3.5達成", "フィジークコンテスト出場", "ハーフマラソン完走"]
+      fit_gear: ["Garminスマートウォッチ", "トレーニングベルトとパワーグリップ", "厚底レーシングシューズ"]
+      morning_run: ["隅田川沿いの爽快な朝ラン", "近隣緑地でのインターバル走", "皇居周回ジョギング"]
+
+  - segment_id: "beauty_trend_fashionista"
+    name: "美容・トレンドファッション層"
+    description: "デパコス、最新スキンケア、韓国コスメ、トレンド服、サロン通いで美意識を磨くファッショニスタ層。"
+    demographics:
+      age_bands: ["20s", "30s"]
+      genders: ["female", "other", "male"]
+      areas: ["東京都", "神奈川県", "大阪府", "福岡県", "愛知県"]
+    interests: ["デパコス", "韓国スキンケア", "パーソナルカラー", "骨格診断", "ヘアケア", "トレンドコーデ"]
+    preferred_items:
+      - item_id: "item_beauty_001" # 高性能ナノイオンドライヤー
+        base_rating: 4.9
+      - item_id: "item_beauty_002" # デパコス美容液ホリデーコフレ
+        base_rating: 4.8
+      - item_id: "item_beauty_003" # 美顔器EMS・ラジオ波
+        base_rating: 4.7
+      - item_id: "item_beauty_004" # 韓国人気シカ鎮静マスク大容量
+        base_rating: 4.6
+      - item_id: "item_fashion_002" # デザイナーズシルクスカーフ
+        base_rating: 4.5
+    disliked_items:
+      - item_id: "item_outdoor_005" # オピネルフォールディングナイフ
+        base_rating: 1.4
+      - item_id: "item_senior_002" # 国産黒にんにく発酵食品
+        base_rating: 1.8
+    profile_templates:
+      - "新作コスメのチェックと{beauty_focus}のお手入れが日課です。休日は{shopping_spot}でショッピングを楽しんでいます。"
+      - "自分磨きが大好きで、特に{skin_goal}を目指して{skincare_routine}にこだわっています。コーデは{fashion_style}が好き。"
+      - "{beauty_focus}の研究に夢中。成分重視のスキンケア選びと、季節ごとの{fashion_style}コーデを発信しています。"
+    slots:
+      beauty_focus: ["ビタミンC・レチノール美容液", "サロン仕様の髪質改善トリートメント", "パーソナルカラーに合わせたリップ"]
+      shopping_spot: ["表参道・銀座のブティック", "伊勢丹新宿のコスメフロア", "韓国コスメセレクトショップ"]
+      skin_goal: ["毛穴レスなノーファンデ肌", "内側から発光する水光肌", "ハリと透明感あふれる素肌"]
+      skincare_routine: ["毎日のシートマスクと美顔器ケア", "ドクターズコスメでの徹底保湿"]
+      fashion_style: ["大人フェミニンで上品なスタイル", "モード感あるきれいめカジュアル", "シンプルで上質なワントーンコーデ"]
+
+  - segment_id: "diy_craft_creator"
+    name: "DIY・クラフト・モノづくり愛好家"
+    description: "日曜大工、木工家具製作、レザークラフト、陶芸、ハンドメイド作品制作に熱中するクリエイター層。"
+    demographics:
+      age_bands: ["30s", "40s", "50s"]
+      genders: ["male", "female"]
+      areas: ["全国"]
+    interests: ["日曜大工", "木工", "レザークラフト", "電動工具", "3Dプリンター", "ハンドメイドマーケット"]
+    preferred_items:
+      - item_id: "item_diy_001" # 充電式インパクトドライバーセット
+        base_rating: 4.9
+      - item_id: "item_diy_002" # 高級レザークラフト工具セット
+        base_rating: 4.8
+      - item_id: "item_diy_003" # 光造形3Dプリンター
+        base_rating: 4.7
+      - item_id: "item_diy_004" # 無垢材用オイルフィニッシュ塗料
+        base_rating: 4.8
+      - item_id: "item_interior_001" # 北欧デザインペンダントライト
+        base_rating: 4.2
+    disliked_items:
+      - item_id: "item_beauty_002" # デパコス美容液ホリデーコフレ
+        base_rating: 1.5
+      - item_id: "item_fashion_001" # ビジネス用本革ドレスシューズ
+        base_rating: 2.1
+    profile_templates:
+      - "休日はガレージで{craft_type}に没頭しています。愛用の{favorite_tool}を使って{make_target}を作るのが最高の時間です。"
+      - "『ないものは自分で作る』がモットー。最近は{craft_type}に挑戦し、{make_target}のクオリティを追求しています。"
+      - "モノづくり歴{diy_years}年。木材や革の経年変化を楽しみながら、ハンドメイドで{make_target}を製作・販売しています。"
+    slots:
+      craft_type: ["本格的な木工DIY", "手縫いのレザークラフト", "3Dプリンターによる便利グッズ製作", "陶芸と金継ぎ"]
+      favorite_tool: ["マキタのインパクトドライバー", "切れ味抜群の革包丁と菱目打ち", "スライド丸ノコ"]
+      make_target: ["無垢材のローテーブルと棚", "手縫いの本革長財布やキーケース", "部屋に合わせたオリジナル収納家具"]
+      diy_years: ["2", "4", "7", "12"]
+
+  - segment_id: "executive_business_leader"
+    name: "エグゼクティブ・ビジネスリーダー層"
+    description: "経営・マネジメント、自己投資、ビジネス書、ゴルフ、上質なスーツや高級時計を好むビジネスパーソン層。"
+    demographics:
+      age_bands: ["30s", "40s", "50s", "60s"]
+      genders: ["male", "female"]
+      areas: ["東京都", "神奈川県", "愛知県", "大阪府"]
+    interests: ["経営戦略", "資産運用", "ゴルフ", "高級時計", "オーダーメイドスーツ", "ワイン・会食"]
+    preferred_items:
+      - item_id: "item_exec_001" # ハーマンミラーアーロンチェア
+        base_rating: 4.9
+      - item_id: "item_exec_002" # 高級ゴルフドライバー最新モデル
+        base_rating: 4.8
+      - item_id: "item_exec_003" # ビジネスリーダーシップ実践洋書
+        base_rating: 4.7
+      - item_id: "item_fashion_001" # ビジネス用本革ドレスシューズ
+        base_rating: 4.9
+      - item_id: "item_gourmet_003" # 高級ワイン頒布会
+        base_rating: 4.7
+    disliked_items:
+      - item_id: "item_anime_001" # 限定版美少女フィギュア
+        base_rating: 1.3
+      - item_id: "item_frugal_003" # コスパ最強まとめ買い冷凍保存容器
+        base_rating: 1.9
+    profile_templates:
+      - "{exec_role}として組織の成長を牽引しています。休日は{exec_weekend}でリフレッシュし、ビジネスの構想を練っています。"
+      - "日々の仕事では{management_focus}を重んじ、自己投資を継続。週末は{exec_weekend}を楽しみながら人脈を広げています。"
+      - "経営と{management_focus}にコミットする日々。ワークスペースは{exec_item}で整え、常に最高のパフォーマンスを発揮できるよう意識しています。"
+    slots:
+      exec_role: ["上場企業の事業部長", "スタートアップ創業者・CEO", "コンサルティングファームのパートナー", "グローバル企業の役員"]
+      exec_weekend: ["名門コースでのラウンドゴルフ", "ワインセラーの整理と会食", "静かな書斎での読書と執筆"]
+      management_focus: ["戦略的思考と組織開発", "グローバル展開とM&A", "次世代リーダーの育成"]
+      exec_item: ["エルゴノミクス高級オフィスチェア", "スマートなオーダースーツ", "洗練された文房具"]
