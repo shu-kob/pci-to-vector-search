@@ -8,6 +8,7 @@ Executes vector searches on user embeddings using:
 
 from __future__ import annotations
 
+import os
 import time
 from typing import Any, Dict, List, Optional, Tuple
 
@@ -17,16 +18,17 @@ from google.cloud import bigquery
 class BigQueryVectorSearchClient:
     def __init__(
         self,
-        project_id: str = "YOUR_PROJECT_ID",
+        project_id: Optional[str] = None,
         dataset_id: str = "pci_vector_search",
         table_name: str = "users_10k",
         location: str = "asia-northeast1",
     ):
-        self.project_id = project_id
+        self.project_id = project_id or os.getenv("GOOGLE_CLOUD_PROJECT", "YOUR_PROJECT_ID")
         self.dataset_id = dataset_id
         self.table_name = table_name
         self.location = location
-        self.client = bigquery.Client(project=project_id, location=location)
+        self.client = bigquery.Client(project=self.project_id, location=location)
+
 
     def search_by_user_id(
         self,

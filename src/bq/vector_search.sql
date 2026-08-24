@@ -54,3 +54,4 @@ FROM
   )
 WHERE base.user_id != query.user_id
 ORDER BY distance ASC;
+

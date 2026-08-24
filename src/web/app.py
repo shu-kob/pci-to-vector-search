@@ -6,9 +6,11 @@ FastAPI server providing endpoints for user inspection and real-time comparison.
 from __future__ import annotations
 
 import json
+import os
 import time
 from pathlib import Path
 from typing import Any, Dict, List, Optional
+
 
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import HTMLResponse, JSONResponse
@@ -17,6 +19,8 @@ from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel
 
 from src.bq.bq_search import BigQueryVectorSearchClient
+from src.bq.hybrid_search import HybridSearchEngine
+from src.bq.why_analysis import WhyAnalysisEngine
 from src.classic.classic_recommender import (
     get_recommendations,
     load_prefs_from_jsonl,
@@ -25,7 +29,7 @@ from src.classic.classic_recommender import (
     top_matches,
 )
 
-app = FastAPI(title="PCI to Vector Search: Two Eras Comparison")
+app = FastAPI(title="PCI to Vector Search: What vs Why Consumer Analysis")
 
 BASE_DIR = Path(__file__).resolve().parent
 templates = Jinja2Templates(directory=str(BASE_DIR / "templates"))
@@ -43,12 +47,17 @@ if DATA_FILE.exists():
     prefs, user_metadata = load_prefs_from_jsonl(DATA_FILE)
     print(f"Loaded {len(prefs)} users for Classic PCI engine.")
 
-# BigQuery client
+# BigQuery client & Engines
+PROJECT_ID = os.getenv("GOOGLE_CLOUD_PROJECT", "YOUR_PROJECT_ID")
 bq_client = BigQueryVectorSearchClient(
-    project_id="YOUR_PROJECT_ID",
+    project_id=PROJECT_ID,
     dataset_id="pci_vector_search",
     table_name="users_10k" if Path("data/users_10k.jsonl").exists() else "users_1k",
 )
+why_engine = WhyAnalysisEngine(project_id=PROJECT_ID, location="asia-northeast1")
+hybrid_engine = HybridSearchEngine(bq_client=bq_client, prefs=prefs, user_metadata=user_metadata)
+
+
 
 
 class CompareRequest(BaseModel):
@@ -240,3 +249,61 @@ async def compare_recommendations(req: CompareRequest):
             "jaccard_similarity": jaccard_similarity,
         },
     }
+
+
+class ExplainWhyRequest(BaseModel):
+    target_user_id: str
+    matched_user_id: str
+    search_mode: str = "Why 類似 (Dense Vector)"
+
+
+@app.post("/api/explain_why")
+async def explain_why(req: ExplainWhyRequest):
+    if req.target_user_id not in user_metadata or req.matched_user_id not in user_metadata:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    target = user_metadata[req.target_user_id]
+    matched = user_metadata[req.matched_user_id]
+
+    explanation = why_engine.explain_why_similar(
+        target_user=target,
+        matched_user=matched,
+        search_mode=req.search_mode,
+    )
+
+    return {
+        "target_user_id": req.target_user_id,
+        "matched_user_id": req.matched_user_id,
+        "explanation": explanation,
+    }
+
+
+class HybridRequest(BaseModel):
+    user_id: str
+    top_k: int = 5
+    alpha: float = 0.5
+
+
+@app.post("/api/hybrid")
+async def get_hybrid_matches(req: HybridRequest):
+    if req.user_id not in user_metadata:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    results = hybrid_engine.search_hybrid(
+        user_id=req.user_id,
+        top_k=req.top_k,
+        alpha=req.alpha,
+    )
+
+    target_user = user_metadata[req.user_id]
+    target_segment = target_user["segment_id"]
+    correct = sum(1 for r in results if r["segment_id"] == target_segment)
+    precision = round((correct / len(results) * 100.0) if results else 0.0, 1)
+
+    return {
+        "user_id": req.user_id,
+        "alpha": req.alpha,
+        "precision": precision,
+        "matches": results,
+    }
+

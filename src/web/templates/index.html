@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>似ているユーザ探索の19年：集合知プログラミング (2007) vs BigQuery VECTOR_SEARCH (2026)</title>
+  <title>What vs Why 顧客理解の19年：集合知プログラミング (2007) vs BigQuery VECTOR_SEARCH (2026)</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -12,26 +12,28 @@
       --bg-base: #0a0e17;
       --bg-surface: #111827;
       --bg-surface-elevated: #1a2234;
-      --bg-glass: rgba(17, 24, 39, 0.75);
+      --bg-glass: rgba(17, 24, 39, 0.85);
       --border-color: #23304a;
-      --border-focus: #3b82f6;
+      --border-focus: #38bdf8;
 
       --text-primary: #f8fafc;
       --text-secondary: #94a3b8;
       --text-muted: #64748b;
 
-      --accent-classic: #f59e0b; /* Amber for 2007 */
-      --accent-classic-bg: rgba(245, 158, 11, 0.12);
-      --accent-classic-border: rgba(245, 158, 11, 0.3);
+      --accent-what: #f59e0b; /* Amber for What / 2007 */
+      --accent-what-bg: rgba(245, 158, 11, 0.12);
+      --accent-what-border: rgba(245, 158, 11, 0.3);
 
-      --accent-modern: #38bdf8; /* Cyan/Sky for 2026 */
-      --accent-modern-gradient: linear-gradient(135deg, #38bdf8, #818cf8);
-      --accent-modern-bg: rgba(56, 189, 248, 0.12);
-      --accent-modern-border: rgba(56, 189, 248, 0.3);
+      --accent-why: #38bdf8; /* Sky Blue for Why / 2026 */
+      --accent-why-gradient: linear-gradient(135deg, #38bdf8, #818cf8);
+      --accent-why-bg: rgba(56, 189, 248, 0.12);
+      --accent-why-border: rgba(56, 189, 248, 0.3);
+
+      --accent-hybrid: #a855f7; /* Purple for Hybrid */
+      --accent-hybrid-bg: rgba(168, 85, 247, 0.12);
 
       --success-green: #10b981;
       --success-green-bg: rgba(16, 185, 129, 0.15);
-      --danger-red: #ef4444;
 
       --font-main: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
       --font-display: 'Outfit', sans-serif;
@@ -53,12 +55,12 @@
       display: flex;
       flex-direction: column;
       background-image: 
-        radial-gradient(circle at 15% 15%, rgba(245, 158, 11, 0.05) 0%, transparent 40%),
-        radial-gradient(circle at 85% 15%, rgba(56, 189, 248, 0.07) 0%, transparent 40%);
+        radial-gradient(circle at 10% 10%, rgba(245, 158, 11, 0.05) 0%, transparent 45%),
+        radial-gradient(circle at 90% 10%, rgba(56, 189, 248, 0.08) 0%, transparent 45%);
     }
 
     header {
-      padding: 2.5rem 2rem 1.5rem;
+      padding: 2.2rem 2rem 1.4rem;
       text-align: center;
       border-bottom: 1px solid var(--border-color);
       background: var(--bg-glass);
@@ -78,8 +80,8 @@
       border-radius: 9999px;
       font-size: 0.82rem;
       font-family: var(--font-mono);
-      color: var(--accent-modern);
-      margin-bottom: 0.75rem;
+      color: var(--accent-why);
+      margin-bottom: 0.65rem;
     }
 
     h1 {
@@ -87,17 +89,16 @@
       font-size: 2.1rem;
       font-weight: 800;
       letter-spacing: -0.02em;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.4rem;
       background: linear-gradient(135deg, #ffffff 30%, #94a3b8 100%);
-      background-clip: text;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
 
     .subtitle {
       color: var(--text-secondary);
-      font-size: 1rem;
-      max-width: 860px;
+      font-size: 0.98rem;
+      max-width: 900px;
       margin: 0 auto;
     }
 
@@ -106,10 +107,10 @@
       max-width: 1400px;
       width: 100%;
       margin: 0 auto;
-      padding: 2rem;
+      padding: 1.8rem;
       display: flex;
       flex-direction: column;
-      gap: 2rem;
+      gap: 1.8rem;
     }
 
     /* Control Panel */
@@ -117,9 +118,9 @@
       background: var(--bg-surface);
       border: 1px solid var(--border-color);
       border-radius: 16px;
-      padding: 1.5rem;
+      padding: 1.4rem;
       display: grid;
-      grid-template-columns: 2fr 1fr 1fr auto;
+      grid-template-columns: 2.2fr 1.1fr 1fr auto;
       gap: 1.25rem;
       align-items: end;
       box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
@@ -132,7 +133,7 @@
     }
 
     .form-group label {
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       font-weight: 600;
       color: var(--text-secondary);
       text-transform: uppercase;
@@ -143,7 +144,7 @@
       height: 44px;
       padding: 0 1rem;
       border-radius: 8px;
-      font-size: 0.95rem;
+      font-size: 0.92rem;
       font-family: var(--font-main);
       background: var(--bg-surface-elevated);
       color: var(--text-primary);
@@ -155,15 +156,15 @@
     select:focus, button:focus {
       outline: none;
       border-color: var(--border-focus);
-      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.25);
     }
 
     .btn-primary {
-      background: var(--accent-modern-gradient);
+      background: var(--accent-why-gradient);
       color: #051329;
       font-weight: 700;
       border: none;
-      padding: 0 1.75rem;
+      padding: 0 1.6rem;
       display: inline-flex;
       align-items: center;
       gap: 0.5rem;
@@ -181,7 +182,7 @@
       border-radius: 16px;
       padding: 1.5rem;
       display: grid;
-      grid-template-columns: 280px 1fr;
+      grid-template-columns: 290px 1fr;
       gap: 1.5rem;
       position: relative;
       overflow: hidden;
@@ -194,13 +195,13 @@
       left: 0;
       bottom: 0;
       width: 4px;
-      background: linear-gradient(to bottom, var(--accent-classic), var(--accent-modern));
+      background: linear-gradient(to bottom, var(--accent-what), var(--accent-why));
     }
 
     .user-tag {
       font-family: var(--font-mono);
       font-size: 0.85rem;
-      color: var(--accent-modern);
+      color: var(--accent-why);
       background: var(--bg-base);
       padding: 0.25rem 0.6rem;
       border-radius: 4px;
@@ -211,7 +212,7 @@
     .segment-badge {
       display: inline-block;
       font-weight: 700;
-      font-size: 1.1rem;
+      font-size: 1.15rem;
       color: var(--text-primary);
       margin-bottom: 0.25rem;
     }
@@ -224,7 +225,7 @@
     }
 
     .interest-pill {
-      font-size: 0.78rem;
+      font-size: 0.76rem;
       background: var(--bg-surface-elevated);
       color: var(--text-secondary);
       padding: 0.2rem 0.6rem;
@@ -236,19 +237,13 @@
     .comparison-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 2rem;
+      gap: 1.8rem;
     }
 
     @media (max-width: 1024px) {
-      .comparison-grid {
-        grid-template-columns: 1fr;
-      }
-      .control-card {
-        grid-template-columns: 1fr;
-      }
-      .target-profile-card {
-        grid-template-columns: 1fr;
-      }
+      .comparison-grid { grid-template-columns: 1fr; }
+      .control-card { grid-template-columns: 1fr; }
+      .target-profile-card { grid-template-columns: 1fr; }
     }
 
     .era-column {
@@ -261,16 +256,16 @@
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
     }
 
-    .era-column.classic {
-      border-top: 4px solid var(--accent-classic);
+    .era-column.what {
+      border-top: 4px solid var(--accent-what);
     }
 
-    .era-column.modern {
-      border-top: 4px solid var(--accent-modern);
+    .era-column.why {
+      border-top: 4px solid var(--accent-why);
     }
 
     .era-header {
-      padding: 1.25rem 1.5rem;
+      padding: 1.25rem 1.4rem;
       border-bottom: 1px solid var(--border-color);
       display: flex;
       justify-content: space-between;
@@ -279,15 +274,15 @@
 
     .era-title {
       font-family: var(--font-display);
-      font-size: 1.25rem;
+      font-size: 1.2rem;
       font-weight: 700;
       display: flex;
       align-items: center;
-      gap: 0.6rem;
+      gap: 0.5rem;
     }
 
-    .era-title.classic { color: var(--accent-classic); }
-    .era-title.modern { color: var(--accent-modern); }
+    .era-title.what { color: var(--accent-what); }
+    .era-title.why { color: var(--accent-why); }
 
     .era-metric-chip {
       font-family: var(--font-mono);
@@ -300,22 +295,22 @@
     }
 
     .precision-box {
-      margin: 1rem 1.5rem 0.5rem;
-      padding: 1rem;
+      margin: 1rem 1.4rem 0.5rem;
+      padding: 0.9rem 1.2rem;
       border-radius: 10px;
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
 
-    .precision-box.classic {
-      background: var(--accent-classic-bg);
-      border: 1px solid var(--accent-classic-border);
+    .precision-box.what {
+      background: var(--accent-what-bg);
+      border: 1px solid var(--accent-what-border);
     }
 
-    .precision-box.modern {
-      background: var(--accent-modern-bg);
-      border: 1px solid var(--accent-modern-border);
+    .precision-box.why {
+      background: var(--accent-why-bg);
+      border: 1px solid var(--accent-why-border);
     }
 
     .precision-value {
@@ -325,7 +320,7 @@
     }
 
     .matches-container {
-      padding: 1rem 1.5rem;
+      padding: 1rem 1.4rem;
       display: flex;
       flex-direction: column;
       gap: 1rem;
@@ -336,13 +331,13 @@
       background: var(--bg-surface-elevated);
       border: 1px solid var(--border-color);
       border-radius: 12px;
-      padding: 1rem 1.25rem;
+      padding: 1rem 1.2rem;
       transition: all 0.2s ease;
       position: relative;
     }
 
     .match-card:hover {
-      border-color: #3b82f6;
+      border-color: #38bdf8;
       transform: translateY(-2px);
     }
 
@@ -352,7 +347,7 @@
 
     .match-card.diff-segment {
       border-left: 4px solid var(--text-muted);
-      opacity: 0.75;
+      opacity: 0.8;
     }
 
     .match-header {
@@ -371,20 +366,20 @@
 
     .match-score {
       font-family: var(--font-mono);
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       font-weight: 700;
       padding: 0.2rem 0.5rem;
       border-radius: 4px;
     }
 
-    .score-classic {
-      background: var(--accent-classic-bg);
-      color: var(--accent-classic);
+    .score-what {
+      background: var(--accent-what-bg);
+      color: var(--accent-what);
     }
 
-    .score-modern {
-      background: var(--accent-modern-bg);
-      color: var(--accent-modern);
+    .score-why {
+      background: var(--accent-why-bg);
+      color: var(--accent-why);
     }
 
     .match-seg-badge {
@@ -413,11 +408,67 @@
     }
 
     .shared-items-section {
-      margin-top: 0.6rem;
-      padding-top: 0.6rem;
+      margin-top: 0.5rem;
+      padding-top: 0.5rem;
       border-top: 1px dashed var(--border-color);
       font-size: 0.8rem;
       color: var(--text-muted);
+    }
+
+    .why-btn {
+      margin-top: 0.6rem;
+      background: rgba(56, 189, 248, 0.08);
+      border: 1px solid var(--border-color);
+      color: var(--accent-why);
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 0.35rem 0.8rem;
+      border-radius: 6px;
+      height: auto;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: all 0.2s ease;
+    }
+
+    .why-btn:hover {
+      background: rgba(56, 189, 248, 0.18);
+      border-color: var(--accent-why);
+    }
+
+    .why-analysis-box {
+      margin-top: 0.75rem;
+      padding: 0.85rem;
+      background: rgba(10, 14, 23, 0.7);
+      border: 1px solid var(--accent-why-border);
+      border-radius: 8px;
+      font-size: 0.84rem;
+      display: none;
+    }
+
+    .why-analysis-box.active {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .why-section-title {
+      font-weight: 700;
+      color: var(--accent-why);
+      margin-bottom: 0.3rem;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .why-text {
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+      line-height: 1.45;
     }
 
     /* Insights Footer Section */
@@ -425,12 +476,12 @@
       background: var(--bg-surface);
       border: 1px solid var(--border-color);
       border-radius: 16px;
-      padding: 1.75rem;
+      padding: 1.6rem;
     }
 
     .insights-title {
       font-family: var(--font-display);
-      font-size: 1.3rem;
+      font-size: 1.25rem;
       margin-bottom: 1rem;
       display: flex;
       align-items: center;
@@ -451,27 +502,27 @@
       background: var(--bg-surface-elevated);
       border: 1px solid var(--border-color);
       border-radius: 12px;
-      padding: 1.25rem;
+      padding: 1.2rem;
     }
 
     .insight-box h4 {
       font-size: 0.95rem;
-      margin-bottom: 0.5rem;
-      color: var(--accent-modern);
+      margin-bottom: 0.45rem;
+      color: var(--accent-why);
     }
 
     .insight-box p {
-      font-size: 0.86rem;
+      font-size: 0.85rem;
       color: var(--text-secondary);
       line-height: 1.5;
     }
 
     .spinner {
       border: 3px solid rgba(255,255,255,0.1);
-      border-top: 3px solid var(--accent-modern);
+      border-top: 3px solid var(--accent-why);
       border-radius: 50%;
-      width: 24px;
-      height: 24px;
+      width: 18px;
+      height: 18px;
       animation: spin 1s linear infinite;
       display: inline-block;
       vertical-align: middle;
@@ -487,9 +538,9 @@
 
   <header>
     <div class="header-badge">Google Cloud BigQuery × Collective Intelligence (PCI)</div>
-    <h1>似ているユーザ探索の19年：手法比較</h1>
+    <h1>顧客理解の19年：What（購買行動）vs Why（深層動機）</h1>
     <p class="subtitle">
-      2007年『集合知プログラミング』の手書き協調フィルタリング（スパース評価値）と、2026年 BigQuery VECTOR_SEARCH（Dense Embedding）の推薦結果・精度・原理を同一ユーザで左右比較。
+      CDPの購買ログ(What)だけでは顧客の理由は見えない。2007年『集合知プログラミング』の手書き協調フィルタリングと、2026年 BigQuery VECTOR_SEARCH(Why)の探索結果・動機解説を左右比較。
     </p>
   </header>
 
@@ -508,18 +559,18 @@
       </div>
 
       <div class="form-group">
-        <label for="classicMethod">2007年 類似度手法</label>
+        <label for="classicMethod">What 類似 (2007年 購買ログ)</label>
         <select id="classicMethod">
-          <option value="pearson">ピアソン相関 (中心化Cos/共通項)</option>
+          <option value="pearson">ピアソン相関 (共通項限定)</option>
           <option value="cosine_shared">コサイン類似度 (共通アイテムのみ)</option>
-          <option value="cosine_zero">コサイン類似度 (ゼロ埋めスパース)</option>
+          <option value="cosine_zero">コサイン類似度 (ゼロ埋め疎行列)</option>
         </select>
       </div>
 
       <div class="form-group">
-        <label for="searchMode">2026年 探索モード</label>
+        <label for="searchMode">Why 類似 (2026年 BQ)</label>
         <select id="searchMode">
-          <option value="approximate">IVF/TreeAH Index (Approximate)</option>
+          <option value="approximate">IVF Index (Approximate)</option>
           <option value="brute_force">ブルートフォース (Exact Search)</option>
         </select>
       </div>
@@ -538,29 +589,31 @@
         <div class="interests-list" id="targetInterests"></div>
       </div>
       <div>
-        <div style="font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.3rem; font-weight: 600;">プロフィール文章 (Embedding 入力)</div>
+        <div style="font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.3rem; font-weight: 600;">
+          生活文脈・購買動機 (Why / Embedding 対象文章)
+        </div>
         <div style="font-size: 0.95rem; color: var(--text-primary); background: rgba(0,0,0,0.25); padding: 0.75rem 1rem; border-radius: 8px; border: 1px solid var(--border-color);" id="targetProfile"></div>
-        <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.5rem;" id="targetRatingsSummary">評価アイテム数: 10件</div>
+        <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.5rem;" id="targetRatingsSummary">購買・評価済みアイテム (What): 10件</div>
       </div>
     </div>
 
     <!-- Comparison Grid (Side by Side) -->
     <div class="comparison-grid">
-      <!-- 2007 Classic PCI -->
-      <div class="era-column classic">
+      <!-- 2007 What: Classic PCI -->
+      <div class="era-column what">
         <div class="era-header">
-          <div class="era-title classic">
-            <span>📜 2007年: 集合知プログラミング</span>
+          <div class="era-title what">
+            <span>📜 2007年: What 類似（購買アイテム一致）</span>
           </div>
           <div class="era-metric-chip" id="classicLatency">0.0 ms</div>
         </div>
 
-        <div class="precision-box classic">
+        <div class="precision-box what">
           <div>
-            <div style="font-size: 0.8rem; color: var(--text-secondary);">潜在セグメント正解率 (Precision@5)</div>
-            <div style="font-size: 0.75rem; color: var(--text-muted);">正解セグメントを引き当てられた割合</div>
+            <div style="font-size: 0.8rem; color: var(--text-secondary);">潜在ペルソナ正解率 (Precision@5)</div>
+            <div style="font-size: 0.75rem; color: var(--text-muted);">行動ログのみで真の動機を引き当てた割合</div>
           </div>
-          <div class="precision-value" id="classicPrecision" style="color: var(--accent-classic);">-- %</div>
+          <div class="precision-value" id="classicPrecision" style="color: var(--accent-what);">-- %</div>
         </div>
 
         <div class="matches-container" id="classicMatches">
@@ -568,21 +621,21 @@
         </div>
       </div>
 
-      <!-- 2026 BigQuery VECTOR_SEARCH -->
-      <div class="era-column modern">
+      <!-- 2026 Why: BigQuery VECTOR_SEARCH -->
+      <div class="era-column why">
         <div class="era-header">
-          <div class="era-title modern">
-            <span>⚡ 2026年: BigQuery VECTOR_SEARCH</span>
+          <div class="era-title why">
+            <span>⚡ 2026年: Why 類似（生活動機ベクトル）</span>
           </div>
           <div class="era-metric-chip" id="modernLatency">0.0 ms</div>
         </div>
 
-        <div class="precision-box modern">
+        <div class="precision-box why">
           <div>
-            <div style="font-size: 0.8rem; color: var(--text-secondary);">潜在セグメント正解率 (Precision@5)</div>
-            <div style="font-size: 0.75rem; color: var(--text-muted);">正解セグメントを引き当てられた割合</div>
+            <div style="font-size: 0.8rem; color: var(--text-secondary);">潜在ペルソナ正解率 (Precision@5)</div>
+            <div style="font-size: 0.75rem; color: var(--text-muted);">生活文脈ベクトルで真の動機を引き当てた割合</div>
           </div>
-          <div class="precision-value" id="modernPrecision" style="color: var(--accent-modern);">-- %</div>
+          <div class="precision-value" id="modernPrecision" style="color: var(--accent-why);">-- %</div>
         </div>
 
         <div class="matches-container" id="modernMatches">
@@ -594,25 +647,25 @@
     <!-- Analytical Insights -->
     <div class="insights-card">
       <div class="insights-title">
-        <span>💡 時代を超えた技術対比インサイト</span>
+        <span>💡 『CDPの限界を超えるWhy分析』技術対比インサイト</span>
       </div>
       <div class="insight-grid">
         <div class="insight-box">
-          <h4>1. 共通項限定 vs 稠密(Dense)埋め込み</h4>
+          <h4>1. 行動の記録(What) vs 意思決定の理由(Why)</h4>
           <p>
-            2007年の手法（ピアソン/共通項cos）は、評価アイテムが1つでも完全に一致すると類似度1.0になり誤爆しやすい（スパースの罠）。2026年のEmbeddingはプロフィール全文の意味空間を捉えるため、語彙が違っても高精度に同セグメントを捉えます。
+            従来のCDP（購買ログ）だけでは「何を買ったか」しか分からず、偶然同じ商品を買った異なるペルソナを類似と誤認します。生活文脈を多次元Embedding化することで、真の購買理由(Why)の一致を捉えられます。
           </p>
         </div>
         <div class="insight-box">
-          <h4>2. スケールとインデックス（O(N²) vs ANN）</h4>
+          <h4>2. 重複率0.4%が示す「次元の断絶」</h4>
           <p>
-            2007年のメモリ総当たりは1万件で数十〜数百msに達し、数万件で破綻します。BigQueryのTreeAH / IVFインデックスは1000万件規模でも数ミリ秒〜数十ミリ秒で近傍を探索可能です。
+            ベンチマークにおいて2007年手法と2026年手法の上位推薦重複率はわずか0.4%でした。これは優劣ではなく、「行動のスパース性」と「言語の意味空間」が見ている情報の次元が根本的に異なることを実証しています。
           </p>
         </div>
         <div class="insight-box">
-          <h4>3. BigQuery インデックスの最小行数</h4>
+          <h4>3. Explainable AIによる施策の導出</h4>
           <p>
-            BigQuery の <code>CREATE VECTOR INDEX</code> は 5,000行以上のテーブルでのみ有効化されます。数千行以下の小規模データセットでは自動的にブルートフォース（厳密探索）が実行されます。
+            各類似ユーザの「Why分析」ボタンを押すと、Geminiが2人に共通する購買動機と具体的なマーケティング施策の示唆をリアルタイムに自動解説します。
           </p>
         </div>
       </div>
@@ -620,8 +673,11 @@
   </main>
 
   <script>
+    let currentTargetUserId = '';
+
     async function runComparison() {
       const userId = document.getElementById('userSelect').value;
+      currentTargetUserId = userId;
       const classicMethod = document.getElementById('classicMethod').value;
       const searchMode = document.getElementById('searchMode').value;
       const useBruteForce = (searchMode === 'brute_force');
@@ -659,7 +715,7 @@
       document.getElementById('targetId').textContent = t.user_id;
       document.getElementById('targetSegment').textContent = t.segment_name;
       document.getElementById('targetProfile').textContent = t.profile_text;
-      document.getElementById('targetRatingsSummary').textContent = `評価アイテム数: ${t.ratings_count} 件 (スパース表現)`;
+      document.getElementById('targetRatingsSummary').textContent = `購買・評価済みアイテム (What): ${t.ratings_count} 件`;
 
       const intContainer = document.getElementById('targetInterests');
       intContainer.innerHTML = '';
@@ -670,7 +726,7 @@
         intContainer.appendChild(span);
       });
 
-      // 2. Classic PCI
+      // 2. Classic What Matches
       const c = data.classic;
       document.getElementById('classicLatency').textContent = `${c.elapsed_ms} ms (Python Memory)`;
       document.getElementById('classicPrecision').textContent = `${c.precision} %`;
@@ -683,22 +739,26 @@
         card.innerHTML = `
           <div class="match-header">
             <span class="match-id">#${idx+1} ${m.user_id}</span>
-            <span class="match-score score-classic">類似度: ${m.score}</span>
+            <span class="match-score score-what">What類似度: ${m.score}</span>
           </div>
           <div>
             <span class="match-seg-badge ${m.is_same_segment ? 'badge-match' : 'badge-mismatch'}">
-              ${m.is_same_segment ? '✓ セグメント一致' : '✕ セグメント不一致'}: ${m.segment_name}
+              ${m.is_same_segment ? '✓ ペルソナ一致' : '✕ ペルソナ不一致'}: ${m.segment_name}
             </span>
           </div>
           <div class="match-body">${m.profile_text}</div>
           <div class="shared-items-section">
-            共通評価アイテム数: ${m.shared_items_count} 件
+            共通購買・評価アイテム数: ${m.shared_items_count} 件
           </div>
+          <button class="why-btn" onclick="explainWhy('${m.user_id}', 'What 類似 (購買アイテム一致)', 'why-box-c-${m.user_id}', this)">
+            <span>🔍 なぜ似ている？ (Why分析)</span>
+          </button>
+          <div id="why-box-c-${m.user_id}" class="why-analysis-box"></div>
         `;
         cContainer.appendChild(card);
       });
 
-      // 3. Modern BigQuery VECTOR_SEARCH
+      // 3. Modern Why Matches
       const m = data.modern;
       document.getElementById('modernLatency').textContent = `${m.elapsed_ms} ms (BigQuery)`;
       document.getElementById('modernPrecision').textContent = `${m.precision} %`;
@@ -711,20 +771,66 @@
         card.innerHTML = `
           <div class="match-header">
             <span class="match-id">#${idx+1} ${item.user_id}</span>
-            <span class="match-score score-modern">Cos類似度: ${item.similarity}</span>
+            <span class="match-score score-why">Why類似度: ${item.similarity}</span>
           </div>
           <div>
             <span class="match-seg-badge ${item.is_same_segment ? 'badge-match' : 'badge-mismatch'}">
-              ${item.is_same_segment ? '✓ セグメント一致' : '✕ セグメント不一致'}: ${item.segment_name}
+              ${item.is_same_segment ? '✓ ペルソナ一致' : '✕ ペルソナ不一致'}: ${item.segment_name}
             </span>
           </div>
           <div class="match-body">${item.profile_text}</div>
+          <button class="why-btn" onclick="explainWhy('${item.user_id}', 'Why 類似 (生活動機ベクトル)', 'why-box-m-${item.user_id}', this)">
+            <span>🔍 なぜ似ている？ (Why分析)</span>
+          </button>
+          <div id="why-box-m-${item.user_id}" class="why-analysis-box"></div>
         `;
         mContainer.appendChild(card);
       });
     }
 
-    // Auto-run on page load
+    async function explainWhy(matchedUserId, mode, containerId, btn) {
+      const box = document.getElementById(containerId);
+      if (box.classList.contains('active')) {
+        box.classList.remove('active');
+        return;
+      }
+
+      btn.disabled = true;
+      const originalText = btn.innerHTML;
+      btn.innerHTML = '<span class="spinner"></span> Why 分析中...';
+
+      try {
+        const res = await fetch('/api/explain_why', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            target_user_id: currentTargetUserId,
+            matched_user_id: matchedUserId,
+            search_mode: mode
+          })
+        });
+
+        if (!res.ok) throw new Error('Why analysis failed');
+        const data = await res.json();
+        const exp = data.explanation;
+
+        box.innerHTML = `
+          <div class="why-section-title">💡 共通する生活価値観・購買動機 (Why)</div>
+          <div class="why-text">${exp.why_common_motivation}</div>
+          <div class="why-section-title">⚖️ What (行動) と Why (動機) のギャップ</div>
+          <div class="why-text">${exp.what_vs_why_gap}</div>
+          <div class="why-section-title">🎯 マーケティング施策への示唆</div>
+          <div class="why-text" style="color: #38bdf8; font-weight: 500;">${exp.marketing_action}</div>
+        `;
+        box.classList.add('active');
+      } catch (err) {
+        alert('Error in Why analysis: ' + err.message);
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = originalText;
+      }
+    }
+
     window.addEventListener('DOMContentLoaded', () => {
       runComparison();
     });

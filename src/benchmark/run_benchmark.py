@@ -11,10 +11,13 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import random
 import time
 from pathlib import Path
-from typing import Any, Callable, Dict, List, Set, Tuple
+from typing import Any, Callable, Dict, List, Optional, Set, Tuple
+
+
 
 import numpy as np
 from tabulate import tabulate
@@ -70,12 +73,14 @@ def run_benchmark(
     jsonl_path: Path,
     num_test_users: int = 30,
     top_k: int = 10,
-    project_id: str = "YOUR_PROJECT_ID",
+    project_id: Optional[str] = None,
     dataset_id: str = "pci_vector_search",
     table_name: str = "users_10k",
     seed: int = 42,
 ) -> Dict[str, Any]:
+    project_id = project_id or os.getenv("GOOGLE_CLOUD_PROJECT", "YOUR_PROJECT_ID")
     print(f"Loading preferences and user metadata from {jsonl_path}...")
+
     prefs, metadata = load_prefs_from_jsonl(jsonl_path)
     all_users = list(prefs.keys())
     print(f"Loaded {len(all_users)} users.")
