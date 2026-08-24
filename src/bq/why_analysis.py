@@ -18,12 +18,13 @@ class WhyAnalysisEngine:
         self,
         project_id: str = "YOUR_PROJECT_ID",
         location: str = "asia-northeast1",
-        model_name: str = "gemini-1.5-flash",
+        model_name: str = "gemini-3.7-flash",
     ):
         self.project_id = project_id
         self.location = location
         self.model_name = model_name
         self._init_client()
+
 
     def _init_client(self) -> None:
         try:
