@@ -53,9 +53,10 @@ flowchart TD
 
 ## 🎯 ベンチマーク実測結果 (10,000ユーザ)
 
-Google Cloud プロジェクト `YOUR_PROJECT_ID` (BigQuery `asia-northeast1`) 上で実測したベンチマーク結果です。
+Google Cloud（BigQuery `asia-northeast1`）上で実測したベンチマーク結果です。
 
 ### 1. 精度 (Precision@K) & レイテンシ比較
+
 
 | 探索手法 | 意味づけ | Precision@5 (ペルソナ一致率) | Precision@10 | 平均レイテンシ |
 | :--- | :--- | :---: | :---: | :---: |

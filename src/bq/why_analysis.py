@@ -7,6 +7,7 @@ Transforms raw vector similarity into actionable consumer insights.
 from __future__ import annotations
 
 import json
+import os
 from typing import Any, Dict, List, Optional
 
 import vertexai
@@ -16,14 +17,15 @@ from vertexai.generative_models import GenerationConfig, GenerativeModel
 class WhyAnalysisEngine:
     def __init__(
         self,
-        project_id: str = "YOUR_PROJECT_ID",
+        project_id: Optional[str] = None,
         location: str = "asia-northeast1",
         model_name: str = "gemini-3.7-flash",
     ):
-        self.project_id = project_id
+        self.project_id = project_id or os.getenv("GOOGLE_CLOUD_PROJECT", "YOUR_PROJECT_ID")
         self.location = location
         self.model_name = model_name
         self._init_client()
+
 
 
     def _init_client(self) -> None:

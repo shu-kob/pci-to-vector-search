@@ -6,9 +6,11 @@ FastAPI server providing endpoints for user inspection and real-time comparison.
 from __future__ import annotations
 
 import json
+import os
 import time
 from pathlib import Path
 from typing import Any, Dict, List, Optional
+
 
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import HTMLResponse, JSONResponse
@@ -46,13 +48,15 @@ if DATA_FILE.exists():
     print(f"Loaded {len(prefs)} users for Classic PCI engine.")
 
 # BigQuery client & Engines
+PROJECT_ID = os.getenv("GOOGLE_CLOUD_PROJECT", "YOUR_PROJECT_ID")
 bq_client = BigQueryVectorSearchClient(
-    project_id="YOUR_PROJECT_ID",
+    project_id=PROJECT_ID,
     dataset_id="pci_vector_search",
     table_name="users_10k" if Path("data/users_10k.jsonl").exists() else "users_1k",
 )
-why_engine = WhyAnalysisEngine(project_id="YOUR_PROJECT_ID", location="asia-northeast1")
+why_engine = WhyAnalysisEngine(project_id=PROJECT_ID, location="asia-northeast1")
 hybrid_engine = HybridSearchEngine(bq_client=bq_client, prefs=prefs, user_metadata=user_metadata)
+
 
 
 

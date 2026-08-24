@@ -8,9 +8,10 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import time
 from pathlib import Path
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Tuple
 
 import vertexai
 from google.cloud import bigquery
@@ -18,11 +19,12 @@ from google.cloud.exceptions import NotFound
 from vertexai.language_models import TextEmbeddingInput, TextEmbeddingModel
 
 
-def init_gcp(project_id: str, location: str) -> Tuple[bigquery.Client, TextEmbeddingModel]:
+def init_google_cloud(project_id: str, location: str) -> Tuple[bigquery.Client, TextEmbeddingModel]:
     vertexai.init(project=project_id, location=location)
     bq_client = bigquery.Client(project=project_id, location=location)
     embed_model = TextEmbeddingModel.from_pretrained("text-multilingual-embedding-002")
     return bq_client, embed_model
+
 
 
 
@@ -210,7 +212,8 @@ def check_index_status(bq_client: bigquery.Client, dataset_id: str) -> None:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Setup BigQuery dataset and Vector Index.")
-    parser.add_argument("--project_id", type=str, default="YOUR_PROJECT_ID", help="GCP Project ID")
+    parser.add_argument("--project_id", type=str, default=os.getenv("GOOGLE_CLOUD_PROJECT", "YOUR_PROJECT_ID"), help="Google Cloud Project ID")
+
     parser.add_argument("--location", type=str, default="asia-northeast1", help="BigQuery & Vertex AI location")
     parser.add_argument("--dataset_id", type=str, default="pci_vector_search", help="BigQuery dataset ID")
     parser.add_argument("--table_name", type=str, default="users_10k", help="Table name")
@@ -220,7 +223,8 @@ def main() -> None:
     parser.add_argument("--distance_type", type=str, default="COSINE", choices=["COSINE", "EUCLIDEAN"], help="Distance metric")
     args = parser.parse_args()
 
-    bq_client, embed_model = init_gcp(args.project_id, args.location)
+    bq_client, embed_model = init_google_cloud(args.project_id, args.location)
+
 
     create_dataset_if_not_exists(bq_client, args.dataset_id, args.location)
 
